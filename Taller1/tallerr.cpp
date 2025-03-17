@@ -1,4 +1,3 @@
-// Rosero Torres Brayan Stiven - 22400233
 #include <iostream>
 using namespace std;
 
@@ -30,7 +29,7 @@ void addProducto()
     // Asigno un id único
     aux->id = contadorId++;
 
-    cout << "Agregar el nombre del producto: ";
+    cout << "Modifique el nombre del producto: ";
     cin >> aux->nombre;
 
     // El nuevo producto apunta a NULL (fin de lista)
@@ -68,7 +67,6 @@ void viewProducto()
 }
 
 // Función para buscar un producto en la lista
-// Función para buscar un producto en la lista
 int searchProducto()
 {
     int seed;
@@ -76,20 +74,18 @@ int searchProducto()
     cin >> seed;
 
     // Recorre la lista comparando el id
-    producto *aux = cab; // Usar un puntero auxiliar para recorrer la lista
-    while (aux != NULL)
+    for (aux = cab; aux != NULL; aux = aux->sig)
     {
         if (aux->id == seed)
         {
-            // Producto encontrado, mostrar información
-            cout << "Producto encontrado\n ID: " << aux->id << ", Nombre: " << aux->nombre << endl;
-            return 1; // id encontrado
+            aux = NULL; // Se limpian los punteros auxiliares
+            free(aux);  // Se libera la memoria de aux
+            return 1;   // id encontrado
         }
-        aux = aux->sig; // Mover al siguiente producto
     }
-
-    cout << "Producto no encontrado." << endl; // Mensaje si no se encuentra el producto
-    return 0;                                  // id no encontrado
+    aux = NULL; // Se limpian los punteros auxiliares
+    free(aux);  // Se libera la memoria de aux
+    return 0;   // id no encontrado
 }
 
 // Función para eliminar un producto en la lista
@@ -99,46 +95,33 @@ int deleteProducto()
     cout << "Digite el id a eliminar: ";
     cin >> dele;
     producto *aux = cab;       // Puntero para recorrer la lista
-    producto *anterior = NULL; // Puntero para el producto anterior
+    producto *anterior = NULL; // Puntero para el nodo anterior
 
     // Recorre la lista buscando el id
     while (aux != NULL)
     {
         if (aux->id == dele)
         {
-            // Si el producto a eliminar es la cabeza
+            // Si el nodo a eliminar es la cabeza
             if (anterior == NULL)
             {
                 cab = aux->sig; // Actualiza la cabeza
             }
             else
             {
-                anterior->sig = aux->sig; // Enlaza el producto anterior con el siguiente
+                anterior->sig = aux->sig; // Enlaza el nodo anterior con el siguiente
             }
-            delete aux; // Libera la memoria del producto
+            delete aux; // Libera la memoria del nodo
             return 1;   // id encontrado y eliminado
         }
-        anterior = aux; // Mueve el puntero anterior al producto actual
-        aux = aux->sig; // Mueve al siguiente producto
+        anterior = aux; // Mueve el puntero anterior al nodo actual
+        aux = aux->sig; // Mueve al siguiente nodo
     }
     // Recorre la lista comparando el id
 
     return 0; // id no encontrado
 }
 
-// funcion para contar productos registrados
-int countProducto()
-{
-    int contadorId = 0; // Lo inicializamos en 0
-    // Recorre desde la cabeza hasta NULL
-    for (aux = cab; aux != NULL; aux = aux->sig)
-    {
-        contadorId++; // Incrementa el contador para cada producto encontarado
-    }
-    cout << "Hay " << contadorId << " Productos" << endl;
-}
-
-//
 // Función para agregar un nuevo producto al final de la lista
 int updateProducto()
 {
@@ -180,7 +163,6 @@ int Salir()
 {
     cout << "Adios!" << endl;
 }
-
 // Función principal con menú de opciones
 int main()
 {
@@ -189,7 +171,7 @@ int main()
     do
     {
         // Muestra menú al usuario
-        cout << "\n======== MENU ========\n";
+        cout << "\n==== MENU ====\n";
         cout << "1. Agregar producto\n";
         cout << "2. Mostrar  productos\n";
         cout << "3. Buscar producto\n";
@@ -209,7 +191,12 @@ int main()
             viewProducto();
             break;
         case 3:
-            searchProducto();
+            band = searchProducto();
+            if (band)
+                cout << "Producto encontrado.\n"
+                     << "Nombre: " << aux->nombre << endl;
+            else
+                cout << "No encontrado.\n";
             break;
         case 4:
             band = deleteProducto();
@@ -218,15 +205,8 @@ int main()
             else
                 cout << "No encontrado.\n";
             break;
-        case 5:
-            countProducto();
-            break;
         case 6:
-            band = updateProducto();
-            if (band)
-                cout << "\nProducto actualizado correctamente.\n";
-            else
-                cout << "No encontrado.\n";
+            updateProducto();
             break;
         case 7:
             Salir();
