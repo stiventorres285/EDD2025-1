@@ -135,7 +135,11 @@ int countProducto()
     {
         contadorId++; // Incrementa el contador para cada producto encontarado
     }
-    cout << "Hay " << contadorId << " Productos" << endl;
+
+    if (contadorId > 0)
+        cout << "\n Hay " << contadorId << " Productos" << endl;
+    else
+        cout << "\n No Hay Productos" << endl;
 }
 
 //
