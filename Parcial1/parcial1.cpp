@@ -31,7 +31,7 @@ struct historial
 };
 
 // Punteros globales para manipular la pila lifo
-struct historial *top = NULL, *auxHistorial = NULL, *aux2Historial = NULL, *top2 = NULL;
+struct historial *top = NULL, *auxHistorial = NULL, *aux2Historial = NULL;
 
 // Función para contar los generos M y F recibimos dos parametros
 void countClients(int &CountM, int &CountF)
