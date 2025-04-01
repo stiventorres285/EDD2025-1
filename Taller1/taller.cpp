@@ -1,3 +1,4 @@
+// fila o cola  fifo
 // Rosero Torres Brayan Stiven - 22400233
 #include <iostream>
 using namespace std;
@@ -12,7 +13,6 @@ struct producto
 
 // Punteros globales para manipular la lista
 struct producto *cab = NULL, *aux = NULL, *aux2 = NULL;
-int contadorId = 1; // Contador para asignar IDs únicos
 
 // Función para agregar un nuevo producto al final de la lista
 void addProducto()
@@ -28,8 +28,6 @@ void addProducto()
     }
 
     // Asigno un id único
-    aux->id = contadorId++;
-
     cout << "Agregar el nombre del producto: ";
     cin >> aux->nombre;
 
@@ -40,17 +38,19 @@ void addProducto()
     if (cab == NULL)
     {
         cab = aux;
+        aux->id = 1;
     }
     else
     {
         // Se recorre la lista hasta el último producto
         aux2 = cab;
+
         while (aux2->sig != NULL)
         {
             aux2 = aux2->sig;
         }
-        // Se enlaza el nuevo producto al final
-        aux2->sig = aux;
+        aux->id = aux2->id + 1; // Asigno un id único
+        aux2->sig = aux;        // Se enlaza el nuevo client al final
     }
     aux = aux2 = NULL; // Se limpian los punteros auxiliares
     free(aux);         // Se libera la memoria de aux
@@ -67,7 +67,6 @@ void viewProducto()
     }
 }
 
-// Función para buscar un producto en la lista
 // Función para buscar un producto en la lista
 int searchProducto()
 {
@@ -129,15 +128,15 @@ int deleteProducto()
 // funcion para contar productos registrados
 int countProducto()
 {
-    int contadorId = 0; // Lo inicializamos en 0
+    int idUnico = 0; // Lo inicializamos en 0
     // Recorre desde la cabeza hasta NULL
     for (aux = cab; aux != NULL; aux = aux->sig)
     {
-        contadorId++; // Incrementa el contador para cada producto encontarado
+        idUnico++; // Incrementa el contador para cada producto encontarado
     }
 
-    if (contadorId > 0)
-        cout << "\n Hay " << contadorId << " Productos" << endl;
+    if (idUnico > 0)
+        cout << "\n Hay " << idUnico << " Productos" << endl;
     else
         cout << "\n No Hay Productos" << endl;
 }
@@ -193,7 +192,7 @@ int main()
     do
     {
         // Muestra menú al usuario
-        cout << "\n======== MENU ========\n";
+        cout << "\n======== MENU COLA========\n";
         cout << "1. Agregar producto\n";
         cout << "2. Mostrar  productos\n";
         cout << "3. Buscar producto\n";
