@@ -99,6 +99,60 @@ int postorden(struct nodo *aux3)
     cout << aux3->val << endl;
     return 0;
 }
+
+// Que nodo quiero eliminar
+// Buscar dicho nodo
+// Garantizar que el nodo padre apunte a NULL
+// Liberar el nodo
+
+int ubicar(nodo *aux3, int aguja)
+{
+    if (aux3 == NULL) // Caso base: nodo nulo
+    {
+        return 0;
+    }
+
+    if (aux3->val == aguja) // Valor encontrado
+    {
+        aux = aux3;
+        return 1;
+    }
+
+    // Buscar en el subárbol izquierdo
+    if (aux3->izq != NULL && ubicar(aux3->izq, aguja))
+    {
+        return 1;
+    }
+
+    // Buscar en el subárbol derecho
+    if (aux3->der != NULL && ubicar(aux3->der, aguja))
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+int buscarNodo()
+// int eliminarNodo()
+{
+    int buscar;
+    cout << "Digitte el valor a buscar: " << endl;
+    cin >> buscar;
+    ubicar(raiz, buscar);
+
+    if (ubicar(raiz, buscar))
+    {
+        // cout << "Valor encontrado: " << aux->val << ", Nombre: " << aux->nombre << endl;
+        cout << "Valor encontrado: " << aux->val << ", Nombre: " << aux->val << endl;
+        cout << "El valor " << buscar << " está en el árbol." << endl;
+    }
+    else
+    {
+        cout << "El valor " << buscar << " NO está en el árbol." << endl;
+    }
+    return 0;
+}
 int Salir()
 {
     cout << "Adios!" << endl;
@@ -116,7 +170,8 @@ int main()
         cout << "1. Preorden\n";
         cout << "2. Inorden\n";
         cout << "3. Postorden\n";
-        cout << "4. Salir\n";
+        cout << "4. Eliminar\n";
+        cout << "5. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opc;
 
@@ -132,6 +187,9 @@ int main()
             postorden(raiz);
             break;
         case 4:
+            buscarNodo();
+            break;
+        case 5:
             Salir();
             break;
         default:
@@ -139,7 +197,7 @@ int main()
             break;
         }
 
-    } while (opc != 4);
+    } while (opc != 5);
 
     // Al salir del programa, se libera la memoria
     // liberarMemoria();
