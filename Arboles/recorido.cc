@@ -64,16 +64,8 @@ int addNodo()
     }
 }
 
-int preorden(struct nodo *aux3)
-{
-    cout << aux3->val << endl;
-    if (aux3->izq != NULL)
-        preorden(aux3->izq);
-    if (aux3->der != NULL)
-        preorden(aux3->der);
-    return 0;
-}
 int inorden(struct nodo *aux3)
+
 {
     if (aux3->izq != NULL)
     {
@@ -84,6 +76,16 @@ int inorden(struct nodo *aux3)
     {
         inorden(aux3->der);
     }
+    return 0;
+}
+
+int preorden(struct nodo *aux3)
+{
+    cout << aux3->val << endl;
+    if (aux3->izq != NULL)
+        preorden(aux3->izq);
+    if (aux3->der != NULL)
+        preorden(aux3->der);
     return 0;
 }
 int postorden(struct nodo *aux3)
