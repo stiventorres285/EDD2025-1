@@ -9,8 +9,8 @@ struct nodo
 {
     char nombre[30];  // nombre que almacena la pel
     int anio;         // año de la realizacion
-    int genero;       // 1. Accion 2. Drama 3.Comedia
-    double dineror;   // Dinero recaudado en millones
+    int genero;       // 1. Masculino 2. Femenino
+    float dineror;    // Dinero recaudado en millones
     struct nodo *izq; // Puntero al siguiente client
     struct nodo *der; // Puntero al siguiente client
 };
@@ -54,9 +54,6 @@ int addNodo()
     cout << "Anio de realizacion: ";
     cin >> aux->anio;
 
-    cout << "Genero: \n 1. Accion \n 2. Drama  \n 3.Comedia" << endl;
-    cin >> aux->genero;
-
     cout << "Dinero recaudado en millones de dolares: ";
     cin >> aux->dineror;
 
@@ -74,46 +71,18 @@ int addNodo()
     }
 }
 
-// Función para obtener el género como texto
-const char *obtenerGeneroTexto(int genero)
-{
-    switch (genero)
-    {
-    case 1:
-        return "Accion";
-    case 2:
-        return "Drama";
-    case 3:
-        return "Comedia";
-    default:
-        return "Desconocido"; // En caso de un valor no válido
-    }
-}
-
-int mostrarP(struct nodo *aux3)
-{
-    cout << "--------------------- " << endl;
-    cout << "Nombre: " << aux3->nombre << endl;
-    cout << "Anio: " << aux3->anio << endl;
-    cout << "Genero: " << obtenerGeneroTexto(aux3->genero) << endl;
-    cout << "Dinero Recaudado: " << aux3->dineror << " millones de dolares " << endl;
-}
-
 int inorden(struct nodo *aux3)
 {
     if (aux3->izq != NULL)
         inorden(aux3->izq);
-    cout << "\n======== INORDEN ========\n";
-    mostrarP(aux3);
+    cout << aux3->anio << endl;
     if (aux3->der != NULL)
         inorden(aux3->der);
     return 0;
 }
 int preorden(struct nodo *aux3)
 {
-    cout << "\n======== PREORDEN ========\n";
-    mostrarP(aux3);
-
+    cout << aux3->anio << endl;
     if (aux3->izq != NULL)
         preorden(aux3->izq);
     if (aux3->der != NULL)
@@ -126,8 +95,22 @@ int postorden(struct nodo *aux3)
         postorden(aux3->izq);
     if (aux3->der != NULL)
         postorden(aux3->der);
+    cout << aux3->anio << endl;
+    return 0;
+}
+
+int mostrar()
+{
+    // Mostrar recorridos
+    cout << "\n======== INORDEN ========\n";
+    inorden(raiz);
+
+    cout << "\n======== PREORDEN ========\n";
+    preorden(raiz);
+
     cout << "\n======== POSTORDEN ========\n";
-    mostrarP(aux3);
+    postorden(raiz);
+
     return 0;
 }
 
@@ -169,7 +152,7 @@ int buscarPelicula()
 
     if (ubicar(raiz, buscar))
     {
-        mostrarP(aux);
+        cout << "Anio: " << aux->anio << "\n Nombre: " << aux->nombre << "\n DineroRecaudo: " << aux->dineror << endl;
     }
     else
     {
@@ -190,49 +173,51 @@ int ubicarG(nodo *aux3, int gener)
         return 0;
     }
 
-    // Si el género coincide, mostrar el nodo
-    if (aux3->genero == gener)
+    if (aux3->genero == gener) // Valor encontrado
     {
-        mostrarP(aux3);
+        aux = aux3;
+        return 1;
     }
-    // Recorrer el subárbol izquierdo y derecho
-    ubicarG(aux3->izq, gener);
-    ubicarG(aux3->der, gener);
+
+    // Buscar en el subárbol izquierdo
+    if (aux3->izq != NULL && ubicarG(aux3->izq, gener))
+    {
+        return 1;
+    }
+
+    // Buscar en el subárbol derecho
+    if (aux3->der != NULL && ubicarG(aux3->der, gener))
+    {
+        return 1;
+    }
+
+    return 0;
 }
 
-int mostrarxG(struct nodo *raiz)
+int mostrarxG()
+// int eliminarNodo()
 {
     int buscar;
-    cout << "buscar pelicula por Genero: \n1. Accion \n 2. Drama \n 3.Comedia " << endl;
+    cout << "buscar una película por su nombre : " << endl;
     cin >> buscar;
 
-    if (buscar < 1 || buscar > 3)
+    if (ubicarG(raiz, buscar) == 1) // Masculino
     {
-        cout << "ERROR: GENERO NO VALIDO" << endl;
+        cout << "\n======== MASCULINO ========\n";
+        cout << "Anio: " << aux->anio << "\n Nombre: " << aux->nombre << "\n DineroRecaudo: " << aux->dineror << endl;
     }
-
-    // Mostrar título según el género seleccionado
-    if (buscar == 1)
+    else
     {
-        cout << "\n======== Accion ========\n";
+        cout << "\n======== FEMENINO ========\n";
+        cout << "Anio: " << aux->anio << "\n Nombre: " << aux->nombre << "\n DineroRecaudo: " << aux->dineror << endl;
     }
-    else if (buscar == 2)
-    {
-        cout << "\n======== Drama ========\n";
-    }
-    else if (buscar == 3)
-    {
-        cout << "\n======== Comedia ========\n";
-    }
-
-    // Llamar a la función recursiva para buscar y mostrar películas
-    ubicarG(raiz, buscar);
+    return 0;
 }
 
 // Función principal con menú de opciones
 int main()
 {
-    int opc, opc2;
+    int opc;
 
     do
     {
@@ -253,34 +238,13 @@ int main()
             addNodo();
             break;
         case 2:
-            cout << "\n======== MENU Recorrido Arbol========\n";
-            cout << "1. INORDEN\n";
-            cout << "2. PREORDEN\n";
-            cout << "3. POSTORDEN\n";
-            cout << "Seleccione una opcion: ";
-            cin >> opc2;
-            switch (opc2)
-            {
-            case 1:
-                inorden(raiz);
-                break;
-            case 2:
-                preorden(raiz);
-                break;
-            case 3:
-                postorden(raiz);
-                break;
-            default:
-                cout << "Opcion no valida. Por favor, seleccione una opcion anioida.\n";
-                break;
-            }
+            mostrar();
             break;
-
         case 3:
             buscarPelicula();
             break;
         case 4:
-            mostrarxG(raiz);
+            mostrarxG();
             break;
         case 6:
             Salir();
