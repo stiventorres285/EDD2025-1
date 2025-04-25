@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": ".",
-      "program": "build/Debug/outDebug",
+      "cwd": "c:/xampp/htdocs/2025/escructuradeDatos/Taller21455",
+      "program": "c:/xampp/htdocs/2025/escructuradeDatos/Taller21455/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

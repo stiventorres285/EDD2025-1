@@ -165,7 +165,7 @@ int buscarPelicula()
 // int eliminarNodo()
 {
     char buscar[50];
-    cout << "buscar una película por su nombre : " << endl;
+    cout << "buscar una pelicula por su nombre : " << endl;
     cin >> buscar;
 
     if (ubicar(raiz, buscar))
