@@ -7,9 +7,10 @@ using namespace std;
 // Estructura del client
 struct nodo
 {
+
     char nombre[30];  // nombre que almacena la pel
     int anio;         // año de la realizacion
-    int genero;       // 1. Accion 2. Drama 3.Comedia
+    int genero;       // 1.Accion 2.Drama 3.Comedia
     double dineror;   // Dinero recaudado en millones
     struct nodo *izq; // Puntero al siguiente client
     struct nodo *der; // Puntero al siguiente client
