@@ -98,6 +98,7 @@
     "sstream": "cpp",
     "stdexcept": "cpp",
     "streambuf": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "taller2~b0290f39b1f54b45f174ee88290c90bc65c06a18": "cpp"
   }
 }
