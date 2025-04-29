@@ -1,3 +1,4 @@
+// Zeneida Ramos -22300082
 // Rosero Torres Brayan Stiven - 22400233
 #include <iostream>
 #include <malloc.h> //gestión de memoria dinámica
