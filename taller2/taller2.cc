@@ -29,7 +29,7 @@ int posicionar()
     {
         if (aux2->izq != NULL) // no esta vacio
         {
-            aux2 = aux2->izq; // si la izq esta ocupada lo mandamos a la izq para q evalue lo mismo posicionar
+            aux2 = aux2->izq; // si la izq esta ocupada lo mandamos a la izq para q egenero lo mismo posicionar
             posicionar();     // llamamos a mi mismos
         }
         else
@@ -39,7 +39,7 @@ int posicionar()
     {
         if (aux2->der != NULL)
         {
-            aux2 = aux2->der; // si la der esta ocupada lo mandamos a la izq para q evalue lo mismo posicionar
+            aux2 = aux2->der; // si la der esta ocupada lo mandamos a la izq para q egenero lo mismo posicionar
             posicionar();
         }
         else
@@ -270,6 +270,100 @@ void mostrarFracasosTaquilleros(nodo *raiz)
         }
     }
 }
+
+// Busca el nodo con su padre; deja el resultado en 'aux' y el padre en 'padre'
+nodo *buscarConPadre(nodo *actual, int clave, nodo **padre)
+{
+    *padre = NULL;
+    while (actual != NULL)
+    {
+        if (actual->genero == clave)
+        {
+            aux = actual; // usamos aux como "target"
+            return aux;
+        }
+        *padre = actual;
+        if (clave < actual->genero)
+            actual = actual->izq;
+        else
+            actual = actual->der;
+    }
+    aux = NULL;
+    return NULL;
+}
+
+void eliminarNodo()
+{
+    if (raiz == NULL)
+    {
+        cout << "El árbol está vacío.\n";
+        return;
+    }
+
+    int clave;
+    cout << "Digite el genero a eliminar: ";
+    cin >> clave;
+
+    nodo *padre = NULL;
+    buscarConPadre(raiz, clave, &padre);
+    if (aux == NULL)
+    {
+        cout << "Nodo con genero " << clave << " no encontrado.\n";
+        return;
+    }
+
+    // Caso de dos hijos: no implementado
+    if (aux->izq != NULL && aux->der != NULL)
+    {
+        // Buscar el sucesor in-order (menor del subárbol derecho)
+        nodo *sucesor = aux->der;
+        nodo *padreSucesor = aux;
+        while (sucesor->izq != NULL)
+        {
+            padreSucesor = sucesor;
+            sucesor = sucesor->izq;
+        }
+        // Copiar el valor del sucesor al nodo a eliminar
+        aux->genero = sucesor->genero;
+        // Eliminar el sucesor
+        aux = sucesor;        // Ahora 'aux' apunta al sucesor
+        padre = padreSucesor; // Actualizar el padre del sucesor
+        // Determinar único hijo (o NULL si es hoja)
+        nodo *hijo = (aux->izq != NULL) ? aux->izq : aux->der;
+        // Ajustar el puntero del padre
+        if (padre->izq == aux)
+        {
+            padre->izq = hijo;
+        }
+        else
+        {
+            padre->der = hijo;
+        }
+    }
+
+    // Determinar único hijo (o NULL si es hoja)
+    nodo *hijo = (aux->izq != NULL) ? aux->izq : aux->der;
+
+    // Ajustar el puntero del padre (o raíz)
+    if (padre == NULL)
+    {
+        // Eliminando la raíz
+        raiz = hijo;
+    }
+    else if (padre->izq == aux)
+    {
+        padre->izq = hijo;
+    }
+    else
+    {
+        padre->der = hijo;
+    }
+
+    free(aux);
+    aux = NULL;
+    cout << "Nodo eliminado correctamente.\n";
+}
+
 int Salir()
 {
     cout << "Adios!" << endl;
@@ -289,7 +383,8 @@ int main()
         cout << "3. Buscar pelicula\n";
         cout << "4. Mostrar x Genero\n";
         cout << "5. Fracasos \n";
-        cout << "6. Salir\n";
+        cout << "6 eliminarNodo \n";
+        cout << "7. Salir\n";
         cout << "Seleccione una opcion: ";
         cin >> opc;
 
@@ -332,6 +427,9 @@ int main()
             mostrarFracasosTaquilleros(raiz); // Llamada a la nueva función
             break;
         case 6:
+            eliminarNodo();
+            break;
+        case 7:
             Salir();
             break;
         default:
